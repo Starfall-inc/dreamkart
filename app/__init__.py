@@ -3,6 +3,7 @@ import os
 from flask import Flask, g
 from flask_migrate import Migrate
 from flask_cors import CORS
+from app.routes import register_blueprints
 
 from app.extensions import db
 from app.utils.tenant_utils import get_tenant_schema
@@ -52,12 +53,6 @@ def init_extensions(app):
     from app.models.tenant import Tenant
 
     # Initialize other extensions here
-
-
-def register_blueprints(app):
-    """Register Flask blueprints."""
-    # Import blueprints
-    pass
 
 
 def setup_tenant_handling(app):

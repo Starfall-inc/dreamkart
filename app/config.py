@@ -39,9 +39,9 @@ class DevelopmentConfig(BaseConfig):
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
-    TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI', 'postgresql://postgres:postgres@localhost:5432/test_myapp')
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # temporary DB for testing
     PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 

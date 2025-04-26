@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamkart - Elevate Your E-commerce Experience</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#D1B3FF',   // Light purple
+                            DEFAULT: '#6A4C9C',  // Main purple shade
+                            dark: '#3F2A68'      // Dark purple
+                        },
+                        secondary: {
+                            light: '#B57EDC',    // Light secondary purple
+                            DEFAULT: '#9B4D99',  // Main secondary purple
+                            dark: '#6A2C68'      // Dark secondary purple
+                        },
+                        text: {
+                            light: '#F3E5F5',    // Light text color
+                            DEFAULT: '#4B3F72',  // Default text color (darker purple)
+                            dark: '#1E1A30'      // Dark text color
+                        },
+                        background: {
+                            light: '#F8F2FF',    // Light background
+                            DEFAULT: '#E6D1FF',  // Default background (light purple)
+                            dark: '#4A2C67'      // Dark background
+                        },
+                        dark: {
+                            light: '#A58AC9',    // Light dark purple
+                            DEFAULT: '#3A2A56',  // Main dark purple
+                            dark: '#1E1531'      // Darkest purple
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['SF Pro Display', 'Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'SF Pro Display', sans-serif;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .curved-bg {
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(106, 76, 156, 0.9) 0%, rgba(155, 77, 153, 0.8) 100%);
+        }
+
+        .apple-button {
+            background: linear-gradient(135deg, #6A4C9C 0%, #9B4D99 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 6px 20px rgba(106, 76, 156, 0.3);
+        }
+
+        .apple-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(106, 76, 156, 0.5);
+        }
+
+        .floating-card {
+            transition: all 0.3s ease;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, #D1B3FF 0%, #B57EDC 100%);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            height: 2px;
+            background: #4B3F72;
+            position: absolute;
+            left: 0;
+            right: 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 8px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 16px;
+        }
+
+        .active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 8px;
+        }
+
+        .active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .active span:nth-child(3) {
+            transform: rotate(-45deg);
+            top: 8px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .blob {
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: morph 8s linear infinite;
+            transform-origin: center;
+            position: absolute;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+            25% { border-radius: 65% 35% 45% 55% / 40% 60% 40% 60%; }
+            50% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            75% { border-radius: 58% 42% 30% 70% / 60% 40% 60% 40%; }
+            100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-x-hidden">
+<div id="loading" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-40 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex-shrink-0 flex items-center">
+                <a href="#" class="flex items-center space-x-2">
+                        <span class="text-primary-dark text-3xl">
+                            <i class="fas fa-shopping-bag"></i>
+                        </span>
+                    <span class="text-text-dark font-bold text-xl">Dreamkart</span>
+                </a>
+            </div>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex space-x-10">
+                <a href="#features" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Features</a>
+                <a href="#themes" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Themes</a>
+                <a href="#pricing" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Pricing</a>
+                <a href="#testimonials" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Testimonials</a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Log in</a>
+                <a href="#" class="apple-button text-white px-6 py-2 rounded-full font-medium">Start Free Trial</a>
+            </div>
+
+            <!-- Mobile Nav -->
+            <div class="md:hidden flex items-center">
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div class="md:hidden hidden" id="mobileMenu">
+            <div class="px-2 pt-2 pb-4 space-y-1 glass-effect rounded-lg mt-2">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Features</a>
+                <a href="#themes" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Themes</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Pricing</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Testimonials</a>
+                <div class="mt-4 space-y-2">
+                    <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Log in</a>
+                    <a href="#" class="block apple-button text-white px-3 py-2 rounded-md text-base font-medium text-center">Start Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="animate-fade-in pt-20">
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white pt-20 pb-32 relative curved-bg overflow-hidden">
+        <div class="blob bg-white top-10 left-10 w-96 h-96"></div>
+        <div class="blob bg-secondary-light bottom-10 right-20 w-80 h-80"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="lg:flex lg:items-center lg:justify-between">
+                <div class="lg:w-1/2 mb-10 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight reveal">
+                        Build your dream store with Dreamkart
+                    </h1>
+                    <p class="mt-4 text-lg md:text-xl text-gray-100 max-w-lg reveal">
+                        Create, manage, and scale your e-commerce business with our premium platform. No coding required.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4 reveal">
+                        <a href="#" class="bg-white text-primary-dark px-8 py-3 rounded-full font-medium apple-button">
+                            Get Started
+                        </a>
+                        <a href="#" class="bg-transparent border border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white hover:bg-opacity-10 transition-colors duration-300">
+                            Watch Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 reveal">
+                    <div class="relative">
+                        <div class="glass-effect rounded-2xl overflow-hidden shadow-2xl">
+                            <img src="/static/img/dashboard_sakuramart.png" alt="Dreamkart Dashboard Preview" class="w-full h-auto"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shops Counter Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center reveal">
+                <h3 class="text-4xl md:text-5xl font-bold text-text-dark mb-4">
+                    <span id="shopsCounter">0</span>
+                    <span class="text-primary">+</span>
+                </h3>
+                <p class="text-xl text-gray-500">Stores worldwide and growing</p>
+            </div>
+            <div class="mt-10 grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
+                <div class="counter-item">
+                    <div class="text-4xl text-primary-dark mb-2">
+                        <i class="fas fa-globe"></i> <!-- Font Awesome Globe Icon -->
+                    </div>
+                    <h4 class="text-3xl font-bold text-primary-dark"><span id="countriesCounter">0</span>+</h4>
+                    <p class="text-gray-500">Countries</p>
+                </div>
+                <div class="counter-item">
+                    <div class="text-4xl text-primary-dark mb-2">
+                        <i class="fas fa-dollar-sign"></i> <!-- Font Awesome Dollar Icon -->
+                    </div>
+                    <h4 class="text-3xl font-bold text-primary-dark">$<span id="salesCounter">0</span>M+</h4>
+                    <p class="text-gray-500">In sales</p>
+                </div>
+                <div class="counter-item">
+                    <div class="text-4xl text-primary-dark mb-2">
+                        <i class="fas fa-cogs"></i> <!-- Font Awesome Product Icon -->
+                    </div>
+                    <h4 class="text-3xl font-bold text-primary-dark"><span id="productsCounter">0</span>M+</h4>
+                    <p class="text-gray-500">Products sold</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-background-light relative overflow-hidden">
+        <div class="blob bg-primary-light top-40 left-20 w-96 h-96"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-text-dark">
+                    Feature-rich platform for modern e-commerce
+                </h2>
+                <p class="mt-4 text-lg text-text-default max-w-2xl mx-auto">
+                    Everything you need to build, manage, and scale your online store
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-paint-brush text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Beautiful Templates</h3>
+                    <p class="text-text-default">
+                        Choose from hundreds of professionally designed templates that are optimized for conversion.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Mobile-First Design</h3>
+                    <p class="text-text-default">
+                        Fully responsive storefronts that look stunning on any device, from desktop to mobile.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Advanced Analytics</h3>
+                    <p class="text-text-default">
+                        Gain insights from comprehensive analytics to optimize your store's performance.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-shopping-cart text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Seamless Checkout</h3>
+                    <p class="text-text-default">
+                        Frictionless checkout process with multiple payment options to maximize conversions.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-cogs text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Powerful Automation</h3>
+                    <p class="text-text-default">
+                        Automate marketing, inventory, and customer service tasks to save time and resources.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="feature-icon w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-lock text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-text-dark mb-3">Enterprise Security</h3>
+                    <p class="text-text-default">
+                        Bank-level security measures to protect your store and customer data at all times.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Template Showcase -->
+    <section id="themes" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-text-dark">
+                    Premium templates for every industry
+                </h2>
+                <p class="mt-4 text-lg text-text-default max-w-2xl mx-auto">
+                    Beautiful, responsive, and conversion-optimized templates
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Fashion template" class="w-full"/>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full px-4 py-1 text-sm font-medium text-primary-dark">
+                            Fashion
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">Vogue</h3>
+                        <p class="text-text-default mb-4">Elegant and modern design perfect for fashion and apparel brands.</p>
+                        <a href="#" class="text-primary-dark font-medium hover:text-primary inline-flex items-center">
+                            View template <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Electronics template" class="w-full"/>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full px-4 py-1 text-sm font-medium text-primary-dark">
+                            Electronics
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">TechZone</h3>
+                        <p class="text-text-default mb-4">Clean, detailed design ideal for electronics and gadget stores.</p>
+                        <a href="#" class="text-primary-dark font-medium hover:text-primary inline-flex items-center">
+                            View template <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 floating-card stagger-item">
+                    <div class="relative">
+                        <img src="/api/placeholder/400/300" alt="Home decor template" class="w-full"/>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full px-4 py-1 text-sm font-medium text-primary-dark">
+                            Home Decor
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">Habitat</h3>
+                        <p class="text-text-default mb-4">Stylish design for furniture and home decoration products.</p>
+                        <a href="#" class="text-primary-dark font-medium hover:text-primary inline-flex items-center">
+                            View template <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#" class="apple-button text-white px-8 py-3 rounded-full font-medium inline-block reveal">
+                    Explore All Templates
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-background-light relative overflow-hidden">
+        <div class="blob bg-primary-light bottom-20 right-20 w-80 h-80"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-text-dark">
+                    Simple, transparent pricing
+                </h2>
+                <p class="mt-4 text-lg text-text-default max-w-2xl mx-auto">
+                    Choose the plan that's right for your business
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 stagger-item">
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">Starter</h3>
+                        <div class="flex justify-center items-end">
+                            <span class="text-4xl font-bold text-text-dark">$29</span>
+                            <span class="text-text-default ml-1">/month</span>
+                        </div>
+                        <p class="mt-2 text-text-default">Perfect for new businesses</p>
+                    </div>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Up to 500 products</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">2% transaction fee</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Basic analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">24/7 email support</span>
+                        </li>
+                    </ul>
+
+                    <a href="#" class="block text-center apple-button text-white py-3 rounded-full font-medium hover:bg-primary-dark transition-colors duration-300">
+                        Get Started
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-xl border-2 border-primary relative transform scale-105 z-20 stagger-item">
+                    <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                        MOST POPULAR
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">Professional</h3>
+                        <div class="flex justify-center items-end">
+                            <span class="text-4xl font-bold text-text-dark">$79</span>
+                            <span class="text-text-default ml-1">/month</span>
+                        </div>
+                        <p class="mt-2 text-text-default">For growing businesses</p>
+                    </div>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Unlimited products</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">1% transaction fee</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Advanced analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Marketing automation</span>
+                        </li>
+                    </ul>
+
+                    <a href="#" class="block text-center apple-button text-white py-3 rounded-full font-medium hover:bg-primary-dark transition-colors duration-300">
+                        Get Started
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 stagger-item">
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-bold text-text-dark mb-2">Enterprise</h3>
+                        <div class="flex justify-center items-end">
+                            <span class="text-4xl font-bold text-text-dark">$199</span>
+                            <span class="text-text-default ml-1">/month</span>
+                        </div>
+                        <p class="mt-2 text-text-default">For large businesses</p>
+                    </div>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Unlimited products</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">0% transaction fee</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Enterprise analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Dedicated support team</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">Advanced customization</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span class="text-text-default">API access</span>
+                        </li>
+                    </ul>
+
+                    <a href="#" class="block text-center apple-button text-white py-3 rounded-full font-medium hover:bg-primary-dark transition-colors duration-300">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-text-dark">
+                    Loved by store owners worldwide
+                </h2>
+                <p class="mt-4 text-lg text-text-default max-w-2xl mx-auto">
+                    See what our customers have to say about Dreamkart
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-background-light rounded-2xl p-8 shadow-lg relative stagger-item">
+                    <div class="absolute top-6 left-8 text-5xl text-primary-light opacity-20">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-text-default mb-6">
+                            "Dreamkart transformed our online presence completely. Sales are up 45% since we migrated our store, and the beautiful templates have significantly improved our conversion rates."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-text-dark">Sarah Johnson</h4>
+                                <p class="text-sm text-text-default">Fashion Boutique Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-background-light rounded-2xl p-8 shadow-lg relative stagger-item">
+                    <div class="absolute top-6 left-8 text-5xl text-primary-light opacity-20">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-text-default mb-6">
+                            "The analytics dashboard is incredible! It gives us actionable insights that have helped us optimize our product offerings and marketing strategy. Our ROI has never been better."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-text-dark">Michael Chen</h4>
+                                <p class="text-sm text-text-default">Electronics Store Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-background-light rounded-2xl p-8 shadow-lg relative stagger-item">
+                    <div class="absolute top-6 left-8 text-5xl text-primary-light opacity-20">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <p class="text-text-default mb-6">
+                            "The customer support team is phenomenal. Any time we've had questions or needed help with customizations, they've been there for us. Dreamkart truly cares about our success."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-text-dark">Emily Rodriguez</h4>
+                                <p class="text-sm text-text-default">Home Decor Brand Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 hero-gradient text-white relative curved-bg overflow-hidden">
+        <div class="blob bg-white top-10 right-10 w-96 h-96"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="lg:flex lg:items-center lg:justify-between">
+                <div class="lg:w-2/3 mb-10 lg:mb-0">
+                    <h2 class="text-3xl md:text-4xl font-bold leading-tight reveal">
+                        Ready to transform your e-commerce business?
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-100 max-w-2xl reveal">
+                        Join thousands of successful store owners who've chosen Dreamkart to build their online presence.
+                    </p>
+                </div>
+                <div class="lg:w-1/3 flex justify-center lg:justify-end reveal">
+                    <a href="#" class="bg-white text-primary-dark px-8 py-4 rounded-full font-medium apple-button text-lg">
+                        Start Your 14-Day Free Trial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark-dark text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-2 mb-6">
+                        <span class="text-white text-2xl">
+                            <i class="fas fa-shopping-bag"></i>
+                        </span>
+                    <span class="text-white font-bold text-xl">Dreamkart</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Premium e-commerce platform for modern businesses. Create, manage, and scale your online store with ease.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-6">Product</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Features</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Templates</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Pricing</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Case Studies</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">API Documentation</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-6">Company</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Careers</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Blog</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Press</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-bold mb-6">Support</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Help Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Community</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Resources</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Partners</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Status</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 mb-4 md:mb-0">
+                &copy; 2025 Dreamkart. All rights reserved.
+            </p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Terms of Service</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Add this to your existing script section
+    document.addEventListener('DOMContentLoaded', function() {
+        // Counter animation function
+        function animateCounter(elementId, targetValue, duration, prefix = '', suffix = '') {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const increment = targetValue / (duration / 16); // Update every 16ms (60fps)
+            let currentValue = startValue;
+
+            const counter = setInterval(() => {
+                currentValue += increment;
+
+                if (currentValue >= targetValue) {
+                    clearInterval(counter);
+                    element.textContent = prefix + targetValue.toLocaleString() + suffix;
+                } else {
+                    element.textContent = prefix + Math.floor(currentValue).toLocaleString() + suffix;
+                }
+            }, 16);
+        }
+
+        // Intersection Observer for triggering counter animations when in view
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Start counter animations
+                    animateCounter('shopsCounter', 52000, 2000);
+                    animateCounter('countriesCounter', 120, 1800);
+                    animateCounter('salesCounter', 950, 2500);
+                    animateCounter('productsCounter', 25, 2200);
+
+                    // Unobserve after triggering
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe the counter section
+        const counterSection = document.querySelector('#shopsCounter').parentElement.parentElement.parentElement;
+        if (counterSection) {
+            counterObserver.observe(counterSection);
+        }
+    });
+</script>
+
+<script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Scroll reveal
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+
+            // Staggered animations for cards
+            const staggerItems = document.querySelectorAll('.stagger-item');
+            staggerItems.forEach((item, index) => {
+                const elementTop = item.getBoundingClientRect().top;
+
+                if (elementTop < windowHeight - 100) {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check
+
+        // Initialize GSAP animations
+        if (typeof gsap !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero section parallax effect
+            gsap.to('.blob', {
+                y: 100,
+                scrollTrigger: {
+                    trigger: '.hero-gradient',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            // Feature cards animation
+            gsap.from('#features .stagger-item', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '#features',
+                    start: 'top 70%'
+                }
+            });
+
+            // Template cards animation
+            gsap.from('#themes .stagger-item', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '#themes',
+                    start: 'top 70%'
+                }
+            });
+
+            // Pricing cards animation
+            gsap.from('#pricing .stagger-item', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '#pricing',
+                    start: 'top 70%'
+                }
+            });
+
+            // Testimonial cards animation
+            gsap.from('#testimonials .stagger-item', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '#testimonials',
+                    start: 'top 70%'
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

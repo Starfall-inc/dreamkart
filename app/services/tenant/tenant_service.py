@@ -4,7 +4,9 @@ from app.models.tenant import Tenant
 import sqlalchemy as sa
 from sqlalchemy import inspect
 from flask import current_app
+from app.services.storage import StorageManager
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +40,7 @@ def create_tenant(name, domain, subdomain, owner_email, plan='free'):
             transaction = connection.begin()
             try:
                 # Create all tables in the new schema
-                from app.models import Base
+                from app.models.base import Base
                 # Set search path for this connection
                 connection.execute(sa.text(f'SET search_path TO "{schema_name}"'))
 
@@ -62,6 +64,7 @@ def create_tenant(name, domain, subdomain, owner_email, plan='free'):
 
                 transaction.commit()
                 logger.info(f"Successfully created schema and tables for {schema_name}")
+                StorageManager.create_bucket(schema_name)
             except Exception as e:
                 transaction.rollback()
                 logger.error(f"Error creating schema tables: {str(e)}")

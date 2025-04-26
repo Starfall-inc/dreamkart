@@ -1,0 +1,68 @@
+{# templates/base.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%}{{ SHOP_NAME }}{% endblock %}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#D1B3FF',   // Light purple
+                            DEFAULT: '#6A4C9C',  // Main purple shade
+                            dark: '#3F2A68'      // Dark purple
+                        },
+                        secondary: {
+                            light: '#B57EDC',    // Light secondary purple
+                            DEFAULT: '#9B4D99',  // Main secondary purple
+                            dark: '#6A2C68'      // Dark secondary purple
+                        },
+                        text: {
+                            light: '#F3E5F5',    // Light text color
+                            DEFAULT: '#4B3F72',  // Default text color (darker purple)
+                            dark: '#1E1A30'      // Dark text color
+                        },
+                        background: {
+                            light: '#F8F2FF',    // Light background
+                            DEFAULT: '#E6D1FF',  // Default background (light purple)
+                            dark: '#4A2C67'      // Dark background
+                        },
+                        dark: {
+                            light: '#A58AC9',    // Light dark purple
+                            DEFAULT: '#3A2A56',  // Main dark purple
+                            dark: '#1E1531'      // Darkest purple
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div id="loading" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+</div>
+
+{% include 'components/navbar.html' %}
+
+<main class="animate-fade-in">
+    {% block content %}{% endblock %}
+</main>
+
+{% include 'components/footer.html' %}
+</body>
+</html>
