@@ -23,6 +23,9 @@ class BaseConfig:
     MINIO_SECURE = os.environ.get('MINIO_SECURE', 'False').lower() == 'true'
     MINIO_PUBLIC_URL = os.environ.get('MINIO_PUBLIC_URL', None)
 
+    # Jinja Context Processors
+    DOMAIN = os.environ.get('DOMAIN', 'localhost:5000')
+
     # CORS
     ENABLE_CORS = True
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*')

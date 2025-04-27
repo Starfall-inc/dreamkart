@@ -38,6 +38,12 @@ def create_app(config_class=None):
     # Register error handlers
     register_error_handlers(app)
 
+    @app.context_processor
+    def inject_jinja():
+        return {
+            "DOMAIN_NAME" : app.config.get("DOMAIN")
+        }
+
     return app
 
 

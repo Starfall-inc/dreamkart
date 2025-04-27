@@ -1,0 +1,52 @@
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-40 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{{ DOMAIN_NAME }}" class="flex items-center space-x-2">
+                        <span class="text-primary-dark text-3xl">
+                            <i class="fas fa-shopping-bag"></i>
+                        </span>
+                    <span class="text-text-dark font-bold text-xl">Dreamkart</span>
+                </a>
+            </div>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex space-x-10">
+                <a href="#features" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Features</a>
+                <a href="#themes" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Themes</a>
+                <a href="#pricing" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Pricing</a>
+                <a href="#testimonials" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Testimonials</a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#" class="text-text-default hover:text-primary-dark transition-colors duration-300 font-medium">Log in</a>
+                <a href="#" class="apple-button text-white px-6 py-2 rounded-full font-medium">Start Free Trial</a>
+            </div>
+
+            <!-- Mobile Nav -->
+            <div class="md:hidden flex items-center">
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div class="md:hidden hidden" id="mobileMenu">
+            <div class="px-2 pt-2 pb-4 space-y-1 glass-effect rounded-lg mt-2">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Features</a>
+                <a href="#themes" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Themes</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Pricing</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Testimonials</a>
+                <div class="mt-4 space-y-2">
+                    <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-text-default hover:text-primary-dark hover:bg-white hover:bg-opacity-10 transition-colors duration-300">Log in</a>
+                    <a href="#" class="block apple-button text-white px-3 py-2 rounded-md text-base font-medium text-center">Start Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- End Navbar -->

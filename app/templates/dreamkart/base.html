@@ -1,10 +1,15 @@
 {# templates/base.html #}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title%}{{ SHOP_NAME }}{% endblock %}</title>
+    <title>{% block title%}Dreamkart - Elevate Your E-commerce Experience{% endblock %}</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -36,6 +41,9 @@
                             DEFAULT: '#3A2A56',  // Main dark purple
                             dark: '#1E1531'      // Darkest purple
                         }
+                    },
+                    fontFamily: {
+                        sans: ['SF Pro Display', 'Helvetica', 'Arial', 'sans-serif']
                     }
                 }
             }
@@ -43,26 +51,150 @@
     </script>
 
     <style>
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'SF Pro Display', sans-serif;
         }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .curved-bg {
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(106, 76, 156, 0.9) 0%, rgba(155, 77, 153, 0.8) 100%);
+        }
+
+        .apple-button {
+            background: linear-gradient(135deg, #6A4C9C 0%, #9B4D99 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 6px 20px rgba(106, 76, 156, 0.3);
+        }
+
+        .apple-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(106, 76, 156, 0.5);
+        }
+
+        .floating-card {
+            transition: all 0.3s ease;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, #D1B3FF 0%, #B57EDC 100%);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            height: 2px;
+            background: #4B3F72;
+            position: absolute;
+            left: 0;
+            right: 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 8px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 16px;
+        }
+
+        .active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 8px;
+        }
+
+        .active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .active span:nth-child(3) {
+            transform: rotate(-45deg);
+            top: 8px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .blob {
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: morph 8s linear infinite;
+            transform-origin: center;
+            position: absolute;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+            25% { border-radius: 65% 35% 45% 55% / 40% 60% 40% 60%; }
+            50% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            75% { border-radius: 58% 42% 30% 70% / 60% 40% 60% 40%; }
+            100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 overflow-x-hidden">
 <div id="loading" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
 </div>
 
-{% include 'components/navbar.html' %}
+{% include 'dreamkart/components/navbar.html' %}
 
 <main class="animate-fade-in">
     {% block content %}{% endblock %}
 </main>
 
-{% include 'components/footer.html' %}
+{% include 'dreamkart/components/footer.html' %}
 </body>
 </html>

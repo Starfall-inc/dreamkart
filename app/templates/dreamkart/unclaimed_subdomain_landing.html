@@ -1,0 +1,95 @@
+{% extends 'dreamkart/base.html' %}
+
+{% block content %}
+<header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-white to-gray-100"></div>
+
+    <div class="blob blob-1" style="top: 15%; left: 10%; width: 300px; height: 300px; background-color: #D1B3FF; opacity: 0.05;"></div>
+    <div class="blob blob-2" style="bottom: 15%; right: 10%; width: 400px; height: 400px; background-color: #B57EDC; opacity: 0.05;"></div>
+
+    <div class="container mx-auto px-6 z-10 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold text-text-dark mb-6 tracking-tight animate-fade-in">
+            <span class="text-primary">{{ subdomain | title }}</span>
+        </h1>
+        <p class="text-5xl md:text-6xl lg:text-7xl font-light text-text-dark mb-8 animate-fade-in">
+            is waiting for you.
+        </p>
+        <p class="text-xl text-gray-500 max-w-xl mx-auto mb-12 animate-fade-in">
+            Claim this subdomain and create your premium e-commerce experience today.
+        </p>
+        <a href="/" class="apple-button text-white font-medium text-lg py-4 px-8 rounded-full inline-block shadow-md hover:shadow-lg transition-all duration-300 animate-fade-in">
+            Claim Your Store
+        </a>
+    </div>
+</header>
+
+<section class="py-24 md:py-32 bg-white">  <div class="container mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-light text-text-dark text-center mb-16 revea">
+        Everything you need to succeed
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="text-center  ">
+            <div class="mb-6 mx-auto w-16 h-16 flex items-center justify-center">
+                <i class="fas fa-store text-2xl text-primary"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-text-dark mb-3">
+                Stunning Storefront
+            </h3>
+            <p class="text-gray-500 leading-relaxed">
+                Beautifully designed templates that put your products center stage.
+            </p>
+        </div>
+
+        <div class="text-center  ">
+            <div class="mb-6 mx-auto w-16 h-16 flex items-center justify-center">
+                <i class="fas fa-mobile-alt text-2xl text-primary"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-text-dark mb-3">
+                Seamless Experience
+            </h3>
+            <p class="text-gray-500 leading-relaxed">
+                Perfect performance on every device, just like you'd expect.
+            </p>
+        </div>
+
+        <div class="text-center  ">
+            <div class="mb-6 mx-auto w-16 h-16 flex items-center justify-center">
+                <i class="fas fa-chart-line text-2xl text-primary"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-text-dark mb-3">
+                Insightful Analytics
+            </h3>
+            <p class="text-gray-500 leading-relaxed">
+                Understand your customers with beautiful, intuitive analytics.
+            </p>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="py-20 bg-gray-50">  <div class="container mx-auto px-6 max-w-4xl">
+    <blockquote class="text-center ">
+        <p class="text-2xl md:text-3xl font-light text-text-dark italic mb-8 leading-relaxed">
+            "Setting up my store took minutes, not days. The design is clean, modern, and my customers love the experience."
+        </p>
+        <footer class="text-gray-500">
+            — Sarah K., Fashion Retailer
+        </footer>
+    </blockquote>
+</div>
+</section>
+
+<section class="py-24 md:py-32 text-center bg-white">  <div class="container mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-light text-text-dark mb-6 ">
+        Ready to begin?
+    </h2>
+    <p class="text-xl text-gray-500 max-w-xl mx-auto mb-12 ">
+        Start your journey with a free 14-day trial. No credit card required.
+    </p>
+    <a href="/" class="apple-button text-white font-medium text-lg py-4 px-8 rounded-full inline-block shadow-md hover:shadow-lg transition-all duration-300 ">
+        Start Free Trial
+    </a>
+</div>
+</section>
+{% endblock %}

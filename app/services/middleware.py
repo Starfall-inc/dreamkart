@@ -1,51 +1,73 @@
 # middleware.py
-from flask import g, request, abort
-from app.services.tenant import get_tenant_by_domain, get_tenant_by_subdomain
+from functools import wraps
+from flask import request, g, abort
+from app.services.tenant import get_tenant_by_subdomain
 import logging
 
 logger = logging.getLogger(__name__)
 
+def check_subdomain(route_func):
+    """
+    A decorator for Flask routes that extracts the subdomain and passes it as an argument.
 
-def tenant_middleware():
-    """Middleware to set the tenant schema based on domain."""
-    # Skip tenant resolution for specific paths
-    if request.path.startswith('/static') or request.path.startswith('/admin'):
-        g.tenant_schema = 'public'
-        return
+    It checks if the request host has more than two parts (indicating a subdomain).
+    If so, it extracts the first part as the subdomain and makes it available
+    as an argument to the decorated route function.
 
-    # Get domain from request
-    host = request.host.split(':')[0]  # Remove port if present
+    If no subdomain is present (e.g., the request is on the main domain),
+    the route function will be called without the subdomain argument.
 
-    # Try to get tenant by full domain first
-    tenant = get_tenant_by_domain(host)
-
-    # If not found, try subdomain approach
-    if not tenant:
+    Note: This decorator should be applied *after* any route-specific decorators
+    (like @app.route('/some/path')).
+    """
+    @wraps(route_func)
+    def decorated_route(*args, **kwargs):
+        host = request.host.split(':')[0]  # Remove port if present
         parts = host.split('.')
-        if len(parts) > 2:  # It's a subdomain
+        subdomain = None
+
+        if len(parts) > 2:
             subdomain = parts[0]
-            tenant = get_tenant_by_subdomain(subdomain)
+            logger.debug(f"Extracted subdomain: {subdomain}")
+            return route_func(subdomain=subdomain, *args, **kwargs)
+        else:
+            logger.debug("No subdomain found for this request.")
+            return route_func(*args, **kwargs)
+    return decorated_route
 
-    if tenant and tenant.is_active:
-        g.tenant_schema = tenant.schema_name
-        g.tenant = tenant
-        logger.debug(f"Set tenant schema to {tenant.schema_name}")
-    else:
-        # Default to public schema - you might want to handle this differently
-        g.tenant_schema = 'public'
-        # For strict multi-tenancy, you might want to abort if no tenant found
-        # abort(404, "Tenant not found")
+# Example of how to use it in your Flask app:
+# from app import app
+# from middleware import check_subdomain
+#
+# @app.route('/')
+# @check_subdomain
+# def index(subdomain=None):
+#     if subdomain:
+#         return f"Welcome to the subdomain: {subdomain}"
+#     else:
+#         return "Welcome to the main domain!"
+#
+# @app.route('/profile')
+# @check_subdomain
+# def profile(subdomain=None):
+#     if subdomain:
+#         # Access tenant information based on the subdomain
+#         tenant = get_tenant_by_subdomain(subdomain)
+#         if tenant:
+#             return f"Profile for tenant: {tenant.name} (subdomain: {subdomain})"
+#         else:
+#             abort(404, "Tenant not found for this subdomain")
+#     else:
+#         return "Your profile on the main domain."
 
-    # Apply schema to session
-    # This ensures new queries use the correct schema
-    # Only needed if you're using raw SQL queries
-    # For SQLAlchemy ORM queries, the Base model handles this
-    if hasattr(g, 'tenant_schema'):
-        from app.extensions import db
-        if db.session:
-            db.session.execute(f'SET search_path TO "{g.tenant_schema}"')
+# You would typically apply this decorator to your route functions directly.
+# The `init_app` function you had before for `before_request` middleware
+# is still relevant for setting the tenant based on the subdomain (as you were doing).
+# You might want to keep that `tenant_middleware` as a `before_request`
+# to ensure `g.tenant_schema` is set for database operations.
 
-
-# Register in Flask app
 def init_app(app):
+    # Keep your existing tenant middleware to set g.tenant_schema
     app.before_request(tenant_middleware)
+    # The new `check_subdomain` is used as a decorator on individual routes.
+    pass
